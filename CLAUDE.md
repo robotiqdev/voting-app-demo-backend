@@ -25,6 +25,13 @@ Vote topics (exact strings):
 
 Initial counts all start at 0.
 
+## Workflow — Superpowers Skills
+Before writing any code, use these skills in order:
+1. `using-git-worktrees` — you are already in a git worktree, follow its conventions
+2. `writing-plans` — create a plan with 2-5 minute tasks before implementing
+3. `test-driven-development` — write tests first (RED), then implement (GREEN), then clean up (REFACTOR)
+4. `executing-plans` — work through your plan task by task, verify each step
+
 ## Rules
 - CORS must be enabled for local development (all origins)
 - Serve static files from `/public` folder
