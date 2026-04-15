@@ -68,3 +68,32 @@ describe('POST /api/vote', () => {
     assert.equal(res.status, 400);
   });
 });
+
+describe('GET /vote', () => {
+  it('returns HTML with dark theme thank-you page for a valid topic', async () => {
+    const res = await fetch(`${baseUrl}/vote?topic=Building%20MCP%20Servers`);
+    assert.equal(res.status, 200);
+    const body = await res.text();
+    assert.match(body, /Thanks for voting for Building MCP Servers!/);
+    assert.match(body, /Your vote has been counted\./);
+    assert.match(body, /#0f0f0f/);
+    assert.match(body, /#d97706/);
+  });
+
+  it('increments the vote count for the given topic', async () => {
+    const before = await (await fetch(`${baseUrl}/api/results`)).json();
+    await fetch(`${baseUrl}/vote?topic=Claude%20in%20Production`);
+    const after = await (await fetch(`${baseUrl}/api/results`)).json();
+    assert.equal(after['Claude in Production'], before['Claude in Production'] + 1);
+  });
+
+  it('returns 400 HTML page for an unknown topic', async () => {
+    const res = await fetch(`${baseUrl}/vote?topic=Unknown`);
+    assert.equal(res.status, 400);
+  });
+
+  it('returns 400 HTML page when topic query param is missing', async () => {
+    const res = await fetch(`${baseUrl}/vote`);
+    assert.equal(res.status, 400);
+  });
+});

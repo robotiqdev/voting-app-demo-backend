@@ -39,6 +39,28 @@ app.post('/api/vote', (req, res) => {
   res.json({ ...votes });
 });
 
+app.get('/vote', (req, res) => {
+  const { topic } = req.query;
+  if (!topic || !(topic in votes)) {
+    return res.status(400).send(`<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Invalid Vote</title></head>
+<body style="background:#0f0f0f;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
+<h1 style="color:#d97706;">Invalid topic</h1>
+</body>
+</html>`);
+  }
+  votes[topic]++;
+  res.send(`<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Thank You</title></head>
+<body style="background:#0f0f0f;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;">
+<h1 style="color:#d97706;">Thanks for voting for ${topic}!</h1>
+<p>Your vote has been counted.</p>
+</body>
+</html>`);
+});
+
 export default app;
 
 // Only listen when run directly, not when imported by tests
